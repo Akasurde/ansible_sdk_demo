@@ -867,7 +867,8 @@
                         </div>
                         {% endif %}
                         <div class="pf-c-overflow-menu__item">
-                          <button class="pf-c-button pf-m-secondary" type="button" onclick="sayHello('{{ h }}');">Ping</button>
+                          {% set ip_address = hosts[h]["ansible_host"] %}
+                          <button class="pf-c-button pf-m-secondary" type="button" onclick="sayHello('{{ ip_address }}');">Ping</button>
                         </div>
                       </div>
                     </div>

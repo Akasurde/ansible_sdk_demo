@@ -8,24 +8,27 @@ import configparser
 
 from ansible_sdk import AnsibleJobDef
 from ansible_sdk.executors import AnsibleSubprocessJobExecutor
+from ansible_sdk.model.job_event import RunnerOnOKEvent
 
 from flask import Flask, render_template, request
 
 loop = asyncio.get_event_loop()
-app = Flask(__name__, static_folder='assets', template_folder='templates')
+app = Flask(__name__, static_folder='assets', template_folder='templates', instance_relative_config=True)
+
 
 @app.route("/")
 def index():
-    filename = "/Volumes/data/src/playbooks/gcp_compute.yml"
+    filename = os.path.join(app.instance_path, "inventory/virtualbox.yml")
+    # filename = os.path.join(app.instance_path, "inventory/gcp_compute.yml")
     hosts = get_inventory(filename=filename)
     return render_template('index.html', hosts=hosts)
 
 
 @app.route('/ping_host', methods=['POST'])
-def ping_host():
+async def ping_host():
     data = request.get_json()
-    loop.run_until_complete(run_playbook(data['ipAddress']))
-    return {'ipAddress': data['ipAddress']}
+    d = await run_playbook(data['ipAddress'])
+    return {'ipAddress': data['ipAddress'], 'response': d.res, 'success': True}
 
 
 def create_temp_dir(host):
@@ -60,10 +63,12 @@ async def run_playbook(host):
 
     # consume events as they arrive
     eventcount = 0
+    result = {'res': {}}
     async for ev in job_status.events:
         eventcount += 1
-        print(f'*** consumed event {ev}')
-
+        if isinstance(ev, RunnerOnOKEvent):
+            result = ev
+    return result.event_data or {}
 
 def get_inventory(filename=None):
     if not filename:
