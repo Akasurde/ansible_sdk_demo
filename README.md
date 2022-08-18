@@ -28,7 +28,7 @@ cp -a instance_config instance
 
 * Specifying GCP Service Account file in the GCP dynamic inventory file
 
-Edit ``service_account_file:`` setting in ``instance/inventory/gcp_compute.yml`` to
+Edit ``service_account_file:`` setting in ``instance_config/inventory/gcp_compute.yml`` to
 specify your service account file.
 
 
