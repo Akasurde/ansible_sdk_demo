@@ -18,6 +18,20 @@ cd ansible_sdk_demo
 pip install -r requirements.txt
 ```
 
+This app uses GCP inventory configuration file.
+
+Firstly, copy example configuration files like -
+
+```console
+cp -a instance_config instance
+```
+
+* Specifying GCP Service Account file in the GCP dynamic inventory file
+
+Edit ``service_account_file:`` setting in ``instance/inventory/gcp_compute.yml`` to
+specify your service account file.
+
+
 # Run
 
 ```console
