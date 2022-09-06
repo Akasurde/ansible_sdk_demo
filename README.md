@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 This app uses GCP inventory configuration file.
 
-Firstly, copy example configuration files like -
+Firstly, copy the example configuration files like -
 
 ```console
 cp -a instance_config instance
@@ -29,7 +29,24 @@ cp -a instance_config instance
 * Specifying GCP Service Account file in the GCP dynamic inventory file
 
 Edit ``service_account_file:`` setting in ``instance/inventory/gcp_compute.yml`` to
-specify your service account file.
+specify your GCP service account file.
+
+A sample GCP Service Account file looks -
+
+```json
+{
+  "type": "service_account",
+  "project_id": "project_name",
+  "private_key_id": "oenx7d5k954bjmnwftuksqej24jdez2p6l4etvxj",
+  "private_key": "-----BEGIN PRIVATE KEY-----<SOME_DATA>\n-----END PRIVATE KEY-----\n",
+  "client_email": "username@project_name.iam.gserviceaccount.com",
+  "client_id": "12345678910",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/username%40project_name.iam.gserviceaccount.com"
+}
+```
 
 
 # Run

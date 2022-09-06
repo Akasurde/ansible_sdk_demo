@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  tasks:
+    - gcp_compute_instance:
+        name: "{{ machine_name }}"
+        deletion_protection: no
+        machine_type: "{{ machine_type }}"
+        zone: "{{ zone }}"
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ service_file }}"
+        status: STARTING
