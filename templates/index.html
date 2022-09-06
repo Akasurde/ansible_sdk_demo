@@ -857,18 +857,26 @@
                   >
                     <div class="pf-c-overflow-menu__content">
                       <div class="pf-c-overflow-menu__group pf-m-button-group">
+                        {% set ip_address = h %}
+                        {% set machine_name = hosts[h]["name"] %}
+                        {% set machine_type = hosts[h]["machineType"] %}
+                        {% set zone = hosts[h]['zone'] %}
+                        {% set project = hosts[h]['project'] %}
                         {% if hosts[h]['status'] != 'RUNNING' %}
+                        {% set powerstate = "poweredon" %}
                         <div class="pf-c-overflow-menu__item">
-                          <button class="pf-c-button pf-m-primary" type="button">Start</button>
-                        </div>
-                        {% else %}
-                        <div class="pf-c-overflow-menu__item">
-                          <button class="pf-c-button pf-m-secondary" type="button">Stop</button>
+                          <button class="pf-c-button pf-m-primary" type="button"
+                            onclick="powerstate_host('{{ ip_address }}', '{{ machine_name }}', '{{ machine_type }}', '{{ zone }}', '{{ project }}', '{{ powerstate }}')">Start</button>
+                          </div>
+                          {% else %}
+                          {% set powerstate = "poweredoff" %}
+                          <div class="pf-c-overflow-menu__item">
+                            <button class="pf-c-button pf-m-secondary" type="button"
+                              onclick="powerstate_host('{{ ip_address }}', '{{ machine_name }}', '{{ machine_type }}', '{{ zone }}', '{{ project }}', '{{ powerstate }}')">Stop</button>
                         </div>
                         {% endif %}
                         <div class="pf-c-overflow-menu__item">
-                          {% set ip_address = hosts[h]["ansible_host"] %}
-                          <button class="pf-c-button pf-m-secondary" type="button" onclick="sayHello('{{ ip_address }}');">Ping</button>
+                          <button class="pf-c-button pf-m-secondary" type="button" onclick="ping_host('{{ ip_address }}');">Ping</button>
                         </div>
                       </div>
                     </div>
