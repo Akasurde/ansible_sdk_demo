@@ -817,6 +817,65 @@
       </nav>
     </div>
   </div>
+  <div id="error_info_modal" class="pf-c-backdrop" style="display:none">
+    <div class="pf-l-bullseye">
+      <div class="pf-c-modal-box pf-m-sm pf-m-danger" role="dialog" aria-modal="true" aria-labelledby="modal-sm-title"
+        aria-describedby="modal-sm-description">
+        <button onclick="hide_error_info_modal()" class="pf-c-button pf-m-plain" type="button" aria-label="Close dialog">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <header class="pf-c-modal-box__header">
+          <h1 class="pf-c-modal-box__title pf-m-icon" id="modal-sm-title">
+            <span class="pf-c-modal-box__title-icon">
+              <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
+            </span>
+            Error
+          </h1>
+        </header>
+        <div id="error_info_message_box" class="pf-c-modal-box__body" id="modal-sm-description">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="success_info_modal" class="pf-c-backdrop" style="display:none">
+    <div class="pf-l-bullseye">
+      <div class="pf-c-modal-box pf-m-sm pf-m-success" role="dialog" aria-modal="true" aria-labelledby="modal-sm-title"
+        aria-describedby="modal-sm-description">
+        <button onclick="hide_success_info_modal()" class="pf-c-button pf-m-plain" type="button"
+          aria-label="Close dialog">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <header class="pf-c-modal-box__header">
+          <h1 class="pf-c-modal-box__title pf-m-icon" id="modal-sm-title">
+            <span class="pf-c-modal-box__title-icon">
+              <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
+            </span>
+            Success
+          </h1>
+        </header>
+        <div id="success_info_message_box" class="pf-c-modal-box__body" id="modal-sm-description">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="progress_modal" class="pf-c-backdrop" style="display:none">
+    <div class="pf-l-bullseye">
+      <div class="pf-c-modal-box pf-m-sm" role="dialog" aria-modal="true" aria-labelledby="modal-sm-title"
+        aria-describedby="modal-sm-description">
+        <button class="pf-c-button pf-m-plain" type="button" aria-label="Close dialog">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <header class="pf-c-modal-box__header">
+          <h1 class="pf-c-modal-box__title" id="modal-sm-title">Processing...</h1>
+        </header>
+        <div class="pf-c-modal-box__body" id="modal-sm-description">
+          <svg class="pf-c-spinner" role="progressbar" viewBox="0 0 100 100" aria-label="Loading...">
+            <circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
   <main class="pf-c-page__main" tabindex="-1" id="main-content-dashboard-demo">
     <section class="pf-c-page__main-breadcrumb pf-m-limit-width">
       <div class="pf-c-page__main-body">
