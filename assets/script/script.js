@@ -1,3 +1,4 @@
+
 function ping_host(ipAddress) {
     $.ajax({
         type: "POST",
@@ -28,7 +29,35 @@ function ping_host(ipAddress) {
     });
 }
 
+function hide(elements) {
+    elements = elements.length ? elements : [elements];
+    for (var index = 0; index < elements.length; index++) {
+        elements[index].style.display = 'none';
+    }
+}
+
+function show_success(powerstate, response) {
+    document.getElementById('success_info_modal').style.display = 'inline';
+    document.getElementById('success_info_message_box').innerHTML = "Successfully " + powerstate + " " + response.ipAddress
+}
+
+function hide_success_info_modal() {
+    document.getElementById('success_info_modal').style.display = 'none';
+}
+
+
+function show_error(powerstate, response) {
+    document.getElementById('error_info_modal').style.display = 'inline';
+    document.getElementById('error_info_message_box').innerHTML = "Something went wrong"
+}
+
+function hide_error_info_modal() {
+    document.getElementById('error_info_modal').style.display = 'none';
+}
+
+
 function powerstate_host(ipAddress, machine_name, machine_type, zone, project, powerstate) {
+    document.getElementById('progress_modal').style.display = 'inline';
     $.ajax({
         type: "POST",
         url: "/powerstate_host",
@@ -54,9 +83,10 @@ function powerstate_host(ipAddress, machine_name, machine_type, zone, project, p
             console.log(response);
 
             if (response.success) {
-                alert(response);
+                show_success(powerstate, response);
+                location.reload()
             } else {
-                alert("Something went wrong");
+                show_error();
             }
         },
         error: function (err) {

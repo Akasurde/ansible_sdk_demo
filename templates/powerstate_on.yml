@@ -9,4 +9,4 @@
         project: "{{ project }}"
         auth_kind: serviceaccount
         service_account_file: "{{ service_file }}"
-        status: STARTING
+        status: RUNNING
