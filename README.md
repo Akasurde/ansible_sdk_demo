@@ -9,6 +9,7 @@ This is a sample Python web application using Flask that shows capabilities of [
 
 - Python 3.8+
 - Ansible SDK
+- Flask (with asgiref)
 
 # Installation
 
