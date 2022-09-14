@@ -34,7 +34,7 @@ async def manage_powerstate_host():
     data = request.get_json()
     datadir_path = create_temp_dir()
     create_inventory(datadir_path=datadir_path, host=data["ipAddress"])
-    print(data['powerstate'])
+    print("Performing %s operation on %s " % (data['powerstate'], data['ipAddress']))
     create_powerstate_playbook(
         datadir_path=datadir_path,
         **{
@@ -47,7 +47,8 @@ async def manage_powerstate_host():
         }
     )
     d = await run_playbook(datadir_path=datadir_path)
-    return {"ipAddress": data["ipAddress"], "response": '', "success": True}
+    print("Return from Ansible SDK %s" % d)
+    return {"ipAddress": data["ipAddress"], "response": d.res, "success": True}
 
 @app.route("/ping_host", methods=["POST"])
 async def ping_host():
@@ -56,6 +57,7 @@ async def ping_host():
     create_inventory(datadir_path=datadir_path, host=data["ipAddress"])
     create_ping_playbook(datadir_path=datadir_path)
     d = await run_playbook(datadir_path=datadir_path)
+    print("Return from Ansible SDK %s" % d)
     return {"ipAddress": data["ipAddress"], "response": d.res, "success": True}
 
 
@@ -115,6 +117,7 @@ async def run_playbook(datadir_path):
         eventcount += 1
         if isinstance(ev, RunnerOnOKEvent):
             result = ev
+    print("Result from Ansible SDK %s" % result)
     return result.event_data or {}
 
 
