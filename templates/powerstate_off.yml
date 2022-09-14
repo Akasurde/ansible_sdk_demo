@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  gather_facts: false
   tasks:
     - gcp_compute_instance:
         name: "{{ machine_name }}"

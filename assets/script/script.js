@@ -83,9 +83,10 @@ function powerstate_host(ipAddress, machine_name, machine_type, zone, project, p
             console.log(response);
 
             if (response.success) {
+                document.getElementById('progress_modal').style.display = 'none';
                 show_success(powerstate, response);
-                location.reload()
             } else {
+                document.getElementById('progress_modal').style.display = 'none';
                 show_error();
             }
         },
