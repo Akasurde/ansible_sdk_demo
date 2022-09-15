@@ -1,2 +1,6 @@
 flask
-
+ansible-runner
+receptorctl
+google-api-python-client
+ansible-core
+asgiref
