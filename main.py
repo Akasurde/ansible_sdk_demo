@@ -1,11 +1,4 @@
-import asyncio
-import configparser
-import json
-import os
-import sys
 import tempfile
-import yaml
-import ansible_runner
 
 import json
 import os
@@ -115,6 +108,7 @@ def create_temp_dir():
     return datadir_path
 
 
+
 def create_powerstate_playbook(datadir_path, **kwargs):
     if kwargs['desired_powerstate'] == 'poweredoff':
         tp_filename = 'gcp_powerstate_off.yml'
@@ -132,16 +126,17 @@ def create_powerstate_playbook(datadir_path, **kwargs):
         fh.write(powerstate_tp)
 
 
+
 def create_gcp_inventory_playbook(datadir_path, **kwargs):
     tp_filename = 'gcp_instance_info.yml'
     instance_info_tp = render_template(
         tp_filename,
         zone=kwargs['zone'],
         project=kwargs['project'],
-        service_file=kwargs['service_file'],
     )
     with open(os.path.join(datadir_path, "project", "pb.yml"), "w") as f:
         f.write(instance_info_tp)
+
 
 
 def create_ping_playbook(datadir_path):
