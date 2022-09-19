@@ -1,13 +1,11 @@
-import asyncio
-import configparser
+import tempfile
+
 import json
 import os
-import sys
+from ansible_sdk import AnsibleJobDef
 import tempfile
 import yaml
 import ansible_runner
-
-from ansible_sdk import AnsibleJobDef
 from ansible_sdk.executors import AnsibleSubprocessJobExecutor
 from ansible_sdk.model.job_event import RunnerOnOKEvent
 
@@ -32,7 +30,7 @@ async def index():
         config = yaml.safe_load(fh.read())
 
     if inventory_type == 'gcp_compute':
-        app.config['service_account_file'] = config.get('service_account_file')
+
         inventory_data = {
             'zone': config.get('zones')[0],
             'project': config.get('projects'),
@@ -90,6 +88,7 @@ async def manage_powerstate_host():
 
 
 @app.route("/ping_host", methods=["POST"])
+
 async def ping_host():
     data = request.get_json()
     datadir_path = create_temp_dir()
@@ -109,6 +108,7 @@ def create_temp_dir():
     return datadir_path
 
 
+
 def create_powerstate_playbook(datadir_path, **kwargs):
     if kwargs['desired_powerstate'] == 'poweredoff':
         tp_filename = 'gcp_powerstate_off.yml'
@@ -126,21 +126,24 @@ def create_powerstate_playbook(datadir_path, **kwargs):
         fh.write(powerstate_tp)
 
 
+
 def create_gcp_inventory_playbook(datadir_path, **kwargs):
     tp_filename = 'gcp_instance_info.yml'
     instance_info_tp = render_template(
         tp_filename,
         zone=kwargs['zone'],
         project=kwargs['project'],
-        service_file=kwargs['service_file'],
+    )
     )
     with open(os.path.join(datadir_path, "project", "pb.yml"), "w") as f:
         f.write(instance_info_tp)
 
 
+
 def create_ping_playbook(datadir_path):
     ping_tp = render_template('ping.yml')
     with open(os.path.join(datadir_path, "project", "pb.yml"), "w") as f:
+
         f.write(ping_tp)
 
 
@@ -149,6 +152,7 @@ def create_inventory(datadir_path, host):
     section_name = "taskhosts"
     inventory.add_section(section_name)
     inventory.set(section_name, host)
+
 
     with open(os.path.join(datadir_path, "inventory", "hosts"), "w") as f:
         inventory.write(f)
@@ -160,29 +164,17 @@ async def run_playbook(datadir_path):
     jobdef = AnsibleJobDef(datadir_path, "pb.yml")
 
     job_status = await executor.submit_job(jobdef)
-
     # consume events as they arrive
     result = {"res": {}}
     async for ev in job_status.events:
         # print(ev)
         if isinstance(ev, RunnerOnOKEvent) and ev.event_data.task_action == 'debug':
             result = ev.event_data.res
-    print("Result from Ansible SDK %s" % result)
-    return result or {}
-
-
-def get_inventory(filename=None):
-    if not filename:
-        return {}
-
-    r = ansible_runner.get_inventory(
-        action="list",
-        inventories=[filename],
     )
     return json.loads(r[0])["_meta"]["hostvars"]
 
 
-if __name__ == "__main__":
+
     if len(sys.argv) == 1:
         sys.exit("Please specify inventory type (valid values: 'gcp_compute', 'azure')")
     inventory_type = sys.argv[1]
