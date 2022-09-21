@@ -1,6 +1,7 @@
 plugin: gcp_compute
 zones: # populate inventory with instances in these regions
   - us-east1-b
+  - us-west1-a
 service_account_file: <PATH_TO_YOUR_GCP_SERVICE_ACCOUNT_FILE>
 auth_kind: serviceaccount
 projects: 'ansible-tower-engineering'
