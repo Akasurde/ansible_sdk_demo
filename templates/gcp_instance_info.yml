@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - gcp_compute_instance_info:
+        zone: "{{ zone }}"
+        project: "{{ project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ service_file }}"
+      register: r
+    {% raw %}
+    - set_fact:
+        inventory_data: "{{ inventory_data | default([]) + [{'name': outer_item.name, 'status': outer_item.status, 'ip_address': outer_item.networkInterfaces[0].networkIP, 'machine_type': outer_item.machineType.split('/')[-1]}] }}"
+      when: r.resources is defined
+      loop: "{{ r.resources }}"
+      loop_control:
+        loop_var: outer_item
+
+    - debug:
+        msg: "{{ inventory_data }}"
+    {% endraw %}

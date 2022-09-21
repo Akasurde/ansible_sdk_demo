@@ -51,8 +51,10 @@ A sample GCP Service Account file looks -
 
 # Run
 
+You can specify which Cloud platform you want to work with. Currently, ``gcp_compute`` is supported.
+
 ```console
-$ python main.py
+$ python main.py gcp_compute
 
 ...
 

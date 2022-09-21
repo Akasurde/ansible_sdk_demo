@@ -905,23 +905,18 @@
               </tr>
             </thead>
             <tbody role="rowgroup">
-            {% for h in hosts %}
+            {% for h in hosts['msg'] %}
               <tr role="row">
-                <td role="cell" data-label="Repository name">{{ hosts[h]['name'] }}</td>
-                <td role="cell" data-label="Branches">{{ h }}</td>
+                <td role="cell" data-label="hostname">{{ h['name'] }}</td>
+                <td role="cell" data-label="ip_address">{{ h['ip_address'] }}</td>
                 <td class="pf-c-table__action" role="cell">
-                  <div
-                    class="pf-c-overflow-menu"
-                    id="table-with-expanded-overflow-menu-overflow-menu-1"
-                  >
+                  <div class="pf-c-overflow-menu" id="table-with-expanded-overflow-menu-overflow-menu-1">
                     <div class="pf-c-overflow-menu__content">
                       <div class="pf-c-overflow-menu__group pf-m-button-group">
-                        {% set ip_address = h %}
-                        {% set machine_name = hosts[h]["name"] %}
-                        {% set machine_type = hosts[h]["machineType"] %}
-                        {% set zone = hosts[h]['zone'] %}
-                        {% set project = hosts[h]['project'] %}
-                        {% if hosts[h]['status'] != 'RUNNING' %}
+                        {% set ip_address = h['ip_address'] %}
+                        {% set machine_name = h["name"] %}
+                        {% set machine_type = h["machine_type"] %}
+                        {% if h['status'] != 'RUNNING' %}
                         {% set powerstate = "poweredon" %}
                         <div class="pf-c-overflow-menu__item">
                           <button class="pf-c-button pf-m-primary" type="button"
