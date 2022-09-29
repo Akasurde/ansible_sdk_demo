@@ -20,6 +20,10 @@ The app will demonstrate the following use cases of the SDK as follows
 - Python 3.8+
 - Ansible SDK
 - Flask (with asgiref)
+- google-api-python-client
+- uwsgi
+- receptorctl
+- ansible-runner
 
 # Installation
 Recommended option is to use the Ansible playbook that will setup your VM with the dependencies and install the demo app for you.
