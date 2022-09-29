@@ -6,6 +6,9 @@ We recommend a Red Hat Enterprise Linux 8 or higher virtual machine. We have bee
 Remember you need to provide your OWN *gcp_auth* file. This is a json output of the service account in *Google Cloud Platform* you wish to use for inventory and actions.
 
 ### Instructions 
+
+Provision a RHEL 8+ virtual machine and ssh to it.
+
 1. Create a user called "sdkuser"
 2. Copy **’gcp_auth', 'install.yml', 'nginx.conf’** to /home/sdkuser
 3. sudo dnf install -y ansible-core
