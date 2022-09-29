@@ -1,0 +1,95 @@
+---
+- hosts: localhost
+  vars:
+    destination_path: "/home/sdkuser"
+  tasks:
+    - debug:
+        msg: "Setting up GCP VM for ansible_sdk_demo"
+
+    - name: Install required packages using DNF
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: latest
+      vars:
+        packages:
+          - ansible-core
+          - nano
+          - git
+          - python38
+          - python38-devel
+          - nginx
+          - gcc
+          - make
+      become: yes
+      
+    - name: Run ansible-galaxy to install google.cloud collection
+      ansible.builtin.command: ansible-galaxy collection install google.cloud
+      
+    - name: Git checkout ansible-sdk
+      ansible.builtin.git:
+        repo: 'https://jonnyfiveiq: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@github.com/ansible/ansible-sdk.git'
+        dest: "{{ destination_path }}/ansible-sdk"
+
+    - name: Git checkout ansible_sdk_demo
+      ansible.builtin.git:
+        repo: 'https://jonnyfiveiq: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@github.com/Akasurde/ansible_sdk_demo.git'
+        dest: "{{ destination_path }}/ansible_sdk_demo"
+
+    - name: Create instance/inventory directory
+      file:
+        path: "{{ destination_path }}/ansible_sdk_demo/instance/inventory"
+        state: directory
+        mode: 0755
+
+    - name: Copy gcp_compute
+      ansible.builtin.command: "cp {{ destination_path }}/ansible_sdk_demo/instance_config/inventory/gcp_compute.yml {{ destination_path }}/ansible_sdk_demo/instance/inventory/gcp_compute.yml"
+
+    - name: Install Ansible SDK
+      ansible.builtin.command: "python3.8 -m pip install -e {{ destination_path }}/ansible-sdk"
+      become: yes
+
+    - name: "Install Python packages using pip"
+      ansible.builtin.pip:
+        name:
+        - ansible-runner
+        - receptorctl
+        - flask
+        - google-api-python-client
+        - asgiref
+        - uwsgi
+      become: yes
+
+    - name: change main.py
+      ansible.builtin.replace:
+        path: "{{ destination_path }}/ansible_sdk_demo/instance/inventory/gcp_compute.yml"
+        regexp: "<PATH_TO_YOUR_GCP_SERVICE_ACCOUNT_FILE>"
+        replace: "{{ destination_path }}/gcp_auth"
+
+    - name: Copy gcp_auth file
+      copy:
+        src: gcp_auth
+        dest: "{{ destination_path }}/gcp_auth"
+
+    - name: Disable SELinux temporarily
+      ansible.builtin.command: setenforce 0
+      become: yes
+
+    - name: Copy nginx.conf file
+      copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+      become: yes
+
+    - name: Disable SELinux temporarily
+      ansible.builtin.command: setenforce 0
+      become: yes
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+        enabled: yes
+      become: yes
+
+    - debug:
+        msg: "Now run within /home/sdkuser/ansible_sdk_demo - '/usr/local/bin/uwsgi --socket 127.0.0.1:5000  --protocol=http -w wsgi:app'"
