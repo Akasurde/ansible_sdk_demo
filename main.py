@@ -2,7 +2,6 @@ import asyncio
 import configparser
 
 import os
-import sys
 from ansible_sdk import AnsibleJobDef
 import tempfile
 import yaml
@@ -166,12 +165,3 @@ async def run_playbook(datadir_path):
             result = ev.event_data.res
     print("Result from Ansible SDK %s" % result)
     return result or {}
-
-
-if __name__ == "__main__":
-    if len(sys.argv) == 1:
-        sys.exit("Please specify inventory type (valid values: 'gcp_compute', 'azure')")
-    inventory_type = sys.argv[1]
-
-    app.config['inventory_type'] = inventory_type
-    app.run(debug=True)
